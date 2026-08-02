@@ -1,0 +1,45 @@
+# macOS
+.DS_Store
+
+# Editor state
+.vscode/
+.fleet/
+*.swp
+*.swo
+*~
+*.log
+
+# Xcode build output and local user state
+build/
+DerivedData/
+xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM
+*.dSYM.zip
+*.xcarchive
+*.xcresult
+
+# Swift Package Manager local state
+.build/
+.swiftpm/
+Packages/
+
+# Local environment and signing files
+.env
+.env.*
+!.env.example
+.xcode.env.local
+Local.xcconfig
+Secrets.xcconfig
+*.local.xcconfig
+*.p12
+*.mobileprovision
+*.cer
+*.pem
+*.key
+GoogleService-Info.plist
