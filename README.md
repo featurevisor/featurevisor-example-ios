@@ -27,7 +27,7 @@ The important SDK usage is in `FeaturevisorViewModel.swift`:
 
 ```swift
 let datafile = try DatafileContent.fromData(data)
-let featurevisor = createFeaturevisor(
+let f = createFeaturevisor(
     FeaturevisorOptions(datafile: datafile)
 )
 
@@ -36,9 +36,9 @@ let context: Context = [
     "country": .string("nl")
 ]
 
-let enabled = featurevisor.isEnabled("mobile_experience", context)
-let variation = featurevisor.getVariation("mobile_experience", context)
-let message = featurevisor.getVariableString(
+let enabled = f.isEnabled("mobile_experience", context)
+let variation = f.getVariation("mobile_experience", context)
+let message = f.getVariableString(
     "mobile_experience",
     "welcome_message",
     context

@@ -13,7 +13,7 @@ final class FeaturevisorViewModel: ObservableObject {
     private let datafileURL = URL(
         string: "https://featurevisor-example-cloudflare.pages.dev/production/featurevisor-mobile.json"
     )!
-    private var featurevisor: Featurevisor?
+    private var f: Featurevisor?
 
     func load() {
         guard !isLoading else {
@@ -48,7 +48,7 @@ final class FeaturevisorViewModel: ObservableObject {
 
             do {
                 let datafile = try DatafileContent.fromData(data)
-                let featurevisor = createFeaturevisor(
+                let f = createFeaturevisor(
                     FeaturevisorOptions(datafile: datafile)
                 )
                 let context: Context = [
@@ -56,17 +56,17 @@ final class FeaturevisorViewModel: ObservableObject {
                     "country": .string("nl")
                 ]
 
-                let enabled = featurevisor.isEnabled("mobile_experience", context)
-                let variation = featurevisor.getVariation("mobile_experience", context) ?? "none"
-                let welcomeMessage = featurevisor.getVariableString(
+                let enabled = f.isEnabled("mobile_experience", context)
+                let variation = f.getVariation("mobile_experience", context) ?? "none"
+                let welcomeMessage = f.getVariableString(
                     "mobile_experience",
                     "welcome_message",
                     context
                 ) ?? "none"
 
                 Task { @MainActor in
-                    self.featurevisor?.close()
-                    self.featurevisor = featurevisor
+                    self.f?.close()
+                    self.f = f
                     self.enabled = enabled
                     self.variation = variation
                     self.welcomeMessage = welcomeMessage
