@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/featurevisor/featurevisor-swift2.git",
       "state" : {
-        "revision" : "eb550035a6b16b200fca5498824bcc4dd022f5d0",
-        "version" : "2.0.0"
+        "revision" : "4f0905ca8b13bb29f3fc68566dfd797048cc7e10",
+        "version" : "3.0.0"
       }
     },
     {
