@@ -8,10 +8,13 @@ final class FeaturevisorViewModel: ObservableObject {
     @Published private(set) var errorMessage: String?
     @Published private(set) var enabled = false
     @Published private(set) var variation = ""
-    @Published private(set) var welcomeMessage = ""
+    @Published private(set) var maxItems = ""
+    @Published private(set) var paymentMethods = ""
+    @Published private(set) var serviceEndpoint = ""
+    @Published private(set) var supportContact = ""
 
     private let datafileURL = URL(
-        string: "https://featurevisor-example-cloudflare.pages.dev/production/featurevisor-mobile.json"
+        string: "https://featurevisor-example-cloudflare.pages.dev/production/featurevisor-sdk-v3.json"
     )!
     private var f: Featurevisor?
 
@@ -49,27 +52,41 @@ final class FeaturevisorViewModel: ObservableObject {
             do {
                 let datafile = try DatafileContent.fromData(data)
                 let f = createFeaturevisor(
-                    FeaturevisorOptions(datafile: datafile)
+                    FeaturevisorOptions(
+                        datafile: datafile,
+                        context: [
+                            "userId": .string("customer-123"),
+                            "country": .string("nl"),
+                            "locale": .string("nl-NL"),
+                            "accountPlan": .string("pro")
+                        ],
+                        logLevel: .error
+                    )
                 )
-                let context: Context = [
-                    "userId": .string("mobile-user"),
-                    "country": .string("nl")
-                ]
 
-                let enabled = f.isEnabled("mobile_experience", context)
-                let variation = f.getVariation("mobile_experience", context) ?? "none"
-                let welcomeMessage = f.getVariableString(
-                    "mobile_experience",
-                    "welcome_message",
-                    context
-                ) ?? "none"
+                let enabled = f.isEnabled("commerce_platform")
+                let variation = f.getVariation("checkout_experience") ?? "none"
+                let maxItems = f.getVariableInteger(
+                    "checkout_experience",
+                    "max_items"
+                ).map(String.init) ?? "none"
+                let paymentMethods = f.getVariableArray(
+                    "checkout_experience",
+                    "payment_methods"
+                )?.compactMap { $0.asString() }.joined(separator: ", ") ?? "none"
+                let endpoints = f.getVariableObject("serviceEndpoints")
+                let serviceEndpoint = endpoints?["baseUrl"]?.asString() ?? "none"
+                let supportContact = f.getVariableString("supportContact") ?? "none"
 
                 Task { @MainActor in
                     self.f?.close()
                     self.f = f
                     self.enabled = enabled
                     self.variation = variation
-                    self.welcomeMessage = welcomeMessage
+                    self.maxItems = maxItems
+                    self.paymentMethods = paymentMethods
+                    self.serviceEndpoint = serviceEndpoint
+                    self.supportContact = supportContact
                     self.isLoading = false
                 }
             } catch {

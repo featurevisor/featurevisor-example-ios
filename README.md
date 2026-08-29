@@ -2,7 +2,9 @@
 
 A small SwiftUI application showing how to use the [Featurevisor Swift SDK](https://github.com/featurevisor/featurevisor-swift2).
 
-The application downloads a Featurevisor datafile, creates an SDK instance, and evaluates the `mobile_experience` feature as a flag, variation, and string variable.
+Learn more about Featurevisor [here](https://featurevisor.com).
+
+The application evaluates the same flag, variation, feature variables, and global variables as the other Featurevisor SDK examples.
 
 ## Requirements
 
@@ -15,34 +17,24 @@ You need Xcode 16 or newer. The application targets iOS 14 or newer.
 3. Select an iPhone simulator.
 4. Run the `FeaturevisorExampleIOS` scheme.
 
-## Featurevisor usage
-
-The application fetches this production datafile:
+The application uses this production datafile:
 
 ```text
-https://featurevisor-example-cloudflare.pages.dev/production/featurevisor-mobile.json
+https://featurevisor-example-cloudflare.pages.dev/production/featurevisor-sdk-v3.json
 ```
 
-The important SDK usage is in `FeaturevisorViewModel.swift`:
+The direct SDK integration lives in `FeaturevisorViewModel.swift`. Change its context values to see how Featurevisor selects different rules, variations, and global variable overrides.
 
-```swift
-let datafile = try DatafileContent.fromData(data)
-let f = createFeaturevisor(
-    FeaturevisorOptions(datafile: datafile)
-)
+## Checks
 
-let context: Context = [
-    "userId": .string("mobile-user"),
-    "country": .string("nl")
-]
-
-let enabled = f.isEnabled("mobile_experience", context)
-let variation = f.getVariation("mobile_experience", context)
-let message = f.getVariableString(
-    "mobile_experience",
-    "welcome_message",
-    context
-)
+```sh
+xcodebuild \
+  -project FeaturevisorExampleIOS.xcodeproj \
+  -scheme FeaturevisorExampleIOS \
+  -configuration Debug \
+  -destination 'generic/platform=iOS Simulator' \
+  CODE_SIGNING_ALLOWED=NO \
+  build
 ```
 
 Learn more in the [Featurevisor Swift SDK documentation](https://featurevisor.com/docs/sdks/swift/).
