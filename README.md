@@ -8,7 +8,7 @@ The application evaluates the same flag, variation, feature variables, and globa
 
 ## Requirements
 
-You need Xcode 16 or newer. The application targets iOS 14 or newer.
+You need Xcode 16.3 or newer. The application targets iOS 15 or newer.
 
 ## Run the application
 
